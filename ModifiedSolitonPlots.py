@@ -4,8 +4,6 @@ from scipy.interpolate import interp1d
 from numpy import trapezoid as trapz
 import warnings
 warnings.filterwarnings('ignore')
-import matplotlib
-matplotlib.use('MacOSX')
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
@@ -238,7 +236,7 @@ ax.set_title('Combined SMBH + baryons (η=0.5)', fontsize=12)
 ax.legend(fontsize=9, loc='lower left'); ax.grid(alpha=0.3, which='both')
 
 plt.tight_layout()
-plt.savefig('/Users/yiguozhang/step5_profiles.png', dpi=140, bbox_inches='tight')
+plt.savefig('step5_profiles.png', dpi=140, bbox_inches='tight')
 plt.show()
 print("Saved: step5_profiles.png")
 
@@ -367,7 +365,7 @@ ax.set_title('Core radius location (▼) shifts inward', fontsize=12)
 ax.legend(fontsize=9); ax.grid(alpha=0.3, which='both')
 
 plt.tight_layout()
-plt.savefig('/Users/yiguozhang/step5_corrections.png', dpi=140, bbox_inches='tight')
+plt.savefig('step5_corrections.png', dpi=140, bbox_inches='tight')
 plt.show()
 print("Saved: step5_corrections.png")
 
@@ -422,7 +420,7 @@ ax.set_title('Total effective potential well',fontsize=12)
 ax.legend(fontsize=9); ax.grid(alpha=0.3, which='both')
 
 plt.tight_layout()
-plt.savefig('/Users/yiguozhang/step5_potentials.png', dpi=140, bbox_inches='tight')
+plt.savefig('step5_potentials.png', dpi=140, bbox_inches='tight')
 plt.show()
 print("Saved: step5_potentials.png")
 print("\nAll three figures done.")
