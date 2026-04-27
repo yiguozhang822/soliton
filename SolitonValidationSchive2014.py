@@ -1,5 +1,5 @@
 """
-Validation: Numerical Soliton Profile vs. Schive et al. 2014
+Step 4 Validation: Numerical Soliton Profile vs. Schive et al. 2014
 =============================================================
 Compares the numerically solved density profile from our SP solver
 against the analytic fitting formula from Schive et al. 2014 (arXiv:1407.7762),
