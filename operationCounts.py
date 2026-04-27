@@ -284,17 +284,3 @@ print(f"  Sparse Chebyshev:  ~{sparse_total} ops      (O(10^{np.log10(sparse_tot
 print(f"  BVP solve:         ~{bvp_mid:,} ops  (O(10^{np.log10(bvp_mid):.1f}))")
 print(f"  Safe claim: ~{int(round(np.log10(bvp_mid/sparse_total)))} orders of magnitude speedup (sparse)")
 print(f"              ~{int(round(np.log10(bvp_mid/full_total)))} orders of magnitude speedup (full)")
-
-# --- Sonnet comparison ---
-print(f"\n{'─' * 70}")
-print(f"  SONNET 4.6 COMPARISON")
-print(f"{'─' * 70}")
-sonnet_cheb = 290
-sonnet_bvp = 6_600_000
-print(f"  {'':25s} {'Sonnet':>12s} {'This script':>12s} {'Difference':>12s}")
-print(f"  {'Chebyshev (sparse)':25s} {sonnet_cheb:>12,} {sparse_total:>12,} {(sparse_total-sonnet_cheb)/sonnet_cheb*100:>+11.1f}%")
-print(f"  {'BVP (10 iter)':25s} {sonnet_bvp:>12,} {bvp_mid:>12,} {(bvp_mid-sonnet_bvp)/sonnet_bvp*100:>+11.1f}%")
-print(f"  {'Ratio':25s} {sonnet_bvp//sonnet_cheb:>12,}x {bvp_mid//sparse_total:>12,}x")
-print(f"\n  Sonnet undercounted BVP by ~{(bvp_mid-sonnet_bvp)/sonnet_bvp*100:.0f}%:")
-print(f"    - Missed v_ext evaluation (~6 ops/point)")
-print(f"    - Missed Jacobian construction via finite differences")
