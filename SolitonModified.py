@@ -50,12 +50,13 @@ def build_initial_guess(x_grid):
     return y0
 
 def get_core_radius(x, s):
-    """Find x_c where s(x)/x = 0.5 (quarter-density, normalization-independent)."""
-    r = s / x
-    idx = np.where(r <= 0.5)[0]
-    if not len(idx): raise ValueError("Profile never reaches quarter-density")
+    """Find x_c where rho(x_c) = 0.5*rho(0) (half-density)."""
+    rho = (s / x)**2
+    half_rho = 0.5 * rho[0]
+    idx = np.where(rho < half_rho)[0]
+    if not len(idx): raise ValueError("Profile never reaches half-density")
     i = idx[0]
-    return x[i-1] + (0.5 - r[i-1]) * (x[i] - x[i-1]) / (r[i] - r[i-1])
+    return x[i-1] + (half_rho - rho[i-1]) / (rho[i] - rho[i-1]) * (x[i] - x[i-1])
 
 # ══════════════════════════════════════════════════════════════
 # ISOLATED BASELINE SOLVE

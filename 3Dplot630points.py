@@ -98,11 +98,12 @@ def to_fixed(sol_x, sol_y):
 
 
 def get_xc(x, s):
-    ratio = s / x
-    idx = np.where(ratio <= 0.5)[0]
+    rho = (s / x)**2
+    half_rho = 0.5 * rho[0]
+    idx = np.where(rho < half_rho)[0]
     if not len(idx): return None
     i = idx[0]
-    return x[i-1] + (0.5 - ratio[i-1]) * (x[i] - x[i-1]) / (ratio[i] - ratio[i-1])
+    return x[i-1] + (half_rho - rho[i-1]) / (rho[i] - rho[i-1]) * (x[i] - x[i-1])
 
 
 # ── Isolated baseline ──────────────────────────────────────────────

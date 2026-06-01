@@ -21,10 +21,11 @@ def build_guess(xg):
     return y0
 
 def get_xc(x,s):
-    r=s/x; idx=np.where(r<=0.5)[0]
+    rho=(s/x)**2; half_rho=0.5*rho[0]
+    idx=np.where(rho<half_rho)[0]
     if not len(idx): return np.nan
     i=idx[0]
-    return x[i-1]+(0.5-r[i-1])*(x[i]-x[i-1])/(r[i]-r[i-1])
+    return x[i-1]+(half_rho-rho[i-1])*(x[i]-x[i-1])/(rho[i]-rho[i-1])
 
 def _bc(ya,yb,p):
     return np.array([ya[0]-X_EPS,ya[1]-1.0,ya[3],yb[0],yb[2]])

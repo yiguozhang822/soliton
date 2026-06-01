@@ -83,16 +83,17 @@ def v_ext(x, Xi, fb, eta):
         out += -fb * (1 + eta**2)**1.5 / np.sqrt(x**2 + eta**2)
     return out
 
-# ── Helper: core radius (quarter-density crossing of s/x) ─────────
+# ── Helper: core radius (half-density crossing of rho = (s/x)^2) ──
 def core_radius(x, s):
-    ratio = s / x
-    idx = np.where(ratio <= 0.5)[0]
+    rho = (s / x)**2
+    half_rho = 0.5 * rho[0]
+    idx = np.where(rho < half_rho)[0]
     if len(idx) == 0:
         return np.nan
     i = idx[0]
     if i == 0:
         return np.nan
-    return x[i-1] + (0.5 - ratio[i-1]) * (x[i] - x[i-1]) / (ratio[i] - ratio[i-1])
+    return x[i-1] + (half_rho - rho[i-1]) / (rho[i] - rho[i-1]) * (x[i] - x[i-1])
 
 # ══════════════════════════════════════════════════════════════════
 # Step 1: Isolated soliton (Xi=fb=0)

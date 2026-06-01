@@ -129,12 +129,13 @@ def solve_and_diagnose(Xi, fb, eta):
     x=sol.x; s=sol.y[0]; v=sol.y[2]
     rho=(s/x)**2
 
-    # Core radius
-    ratio=s/x; idx=np.where(ratio<=0.5)[0]
+    # Core radius (half-density: rho = (s/x)^2, find where rho < 0.5*rho[0])
+    half_rho_cr = 0.5 * rho[0]
+    idx=np.where(rho < half_rho_cr)[0]
     xc = None
     if len(idx):
         i=idx[0]
-        xc=x[i-1]+(0.5-ratio[i-1])*(x[i]-x[i-1])/(ratio[i]-ratio[i-1])
+        xc=x[i-1]+(half_rho_cr-rho[i-1])*(x[i]-x[i-1])/(rho[i]-rho[i-1])
 
     mu=trapz(s**2,x)
     nodes=count_nodes(s)
