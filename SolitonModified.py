@@ -12,7 +12,8 @@ Descriptor set: Π = (Ξ, f_b,core, η)
   η       = a / r_c0                  (Plummer scale / isolated core radius)
 
 External potential:
-  v_ext(x) = -Ξ/x  -  fb*(1+η²)^1.5 / √(x² + η²)
+  v_ext(x) = -Ξ/x  -  fb*(1+η²)^1.5 / √(x² + (η·x_c0)²)
+  (x_c0 ≈ 1.30 grid units; Plummer scale expressed in grid units as η·x_c0)
 
 Observables:
   f_r   = r_c / r_c0  = x_c_perturbed / x_c_isolated
@@ -89,10 +90,12 @@ def v_ext(x, Xi, fb, eta):
     """
     Dimensionless external potential from SMBH + Plummer baryons.
     Plummer prefactor: (1+η²)^1.5 converts fb_core → total M_b/M_sol,0.
+    Plummer scale in grid units: η·x_c0  (x_c0 ≈ 1.30, grid core ≠ 1).
+    Potential: -Ξ/x  -  fb*(1+η²)^1.5 / √(x² + (η·x_c0)²)
     """
     out = np.zeros_like(x)
     if Xi  != 0.0: out += -Xi / x
-    if fb  != 0.0: out += -fb * (1.0 + eta**2)**1.5 / np.sqrt(x**2 + eta**2)
+    if fb  != 0.0: out += -fb * (1.0 + eta**2)**1.5 / np.sqrt(x**2 + (eta*xc0)**2)
     return out
 
 # ══════════════════════════════════════════════════════════════

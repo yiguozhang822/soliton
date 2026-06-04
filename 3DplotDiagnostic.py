@@ -104,9 +104,11 @@ xc0=xc0_stored; mu0=mu0_stored; eps0=sol_iso.p[0]
 y_iso_f=to_fixed(sol_iso.x,sol_iso.y)
 
 def v_ext(x,Xi,fb,eta):
+    # Plummer scale in grid units: eta*xc0 (xc0 ≈ 1.30, grid core sits at xc0, not 1).
+    # Prefactor (1+eta**2)**1.5 and SMBH term -Xi/x are unchanged.
     out=np.zeros_like(x)
     if Xi!=0: out+=-Xi/x
-    if fb!=0: out+=-fb*(1+eta**2)**1.5/np.sqrt(x**2+eta**2)
+    if fb!=0: out+=-fb*(1+eta**2)**1.5/np.sqrt(x**2+(eta*xc0)**2)
     return out
 
 def count_nodes(s):

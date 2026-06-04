@@ -123,9 +123,11 @@ print(f"  xc0={xc0:.5f}, mu0={mu0:.4f}, eps0={eps0:.6f}\n")
 
 
 def v_ext(x, Xi, fb, eta):
+    # Plummer scale in grid units: eta*xc0 (xc0 ≈ 1.30, so grid core sits at xc0, not 1).
+    # Prefactor (1+eta**2)**1.5 and SMBH term -Xi/x are unchanged.
     out = np.zeros_like(x)
     if Xi != 0.0: out += -Xi / x
-    if fb != 0.0: out += -fb * (1 + eta**2)**1.5 / np.sqrt(x**2 + eta**2)
+    if fb != 0.0: out += -fb * (1 + eta**2)**1.5 / np.sqrt(x**2 + (eta*xc0)**2)
     return out
 
 

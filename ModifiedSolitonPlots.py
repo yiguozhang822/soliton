@@ -48,9 +48,11 @@ y_iso_f=to_fixed(sol_iso.x,sol_iso.y)
 print(f"Isolated baseline: xc0={xc0:.4f}, mu0={mu0:.4f}")
 
 def v_ext(x,Xi,fb,eta):
+    # Plummer scale in grid units: eta*xc0 (xc0 ≈ 1.30, grid core sits at xc0, not 1).
+    # Prefactor (1+eta**2)**1.5 and SMBH term -Xi/x are unchanged.
     out=np.zeros_like(x)
     if Xi!=0: out+=-Xi/x
-    if fb!=0: out+=-fb*(1+eta**2)**1.5/np.sqrt(x**2+eta**2)
+    if fb!=0: out+=-fb*(1+eta**2)**1.5/np.sqrt(x**2+(eta*xc0)**2)
     return out
 
 def solve_pt(Xi,fb,eta,yw=None,eg=None):
@@ -209,7 +211,7 @@ for i,Xi in enumerate([0.05,0.10,0.20,0.50,1.00]):
     vx = -Xi/x_pot
     ax.plot(x_pot, vx, color=c_Xi[i+1], lw=2.0, ls='-', label=f'SMBH Ξ={Xi}')
 for i,fb in enumerate([0.10,0.30,0.50]):
-    vx = -fb*(1+0.5**2)**1.5/np.sqrt(x_pot**2+0.5**2)
+    vx = -fb*(1+0.5**2)**1.5/np.sqrt(x_pot**2+(0.5*xc0)**2)
     ax.plot(x_pot, vx, lw=2.0, ls='--', alpha=0.8, label=f'Plummer fb={fb},η=0.5')
 ax.axvline(1.0, ls=':', color='gray', alpha=0.5, lw=1, label='$r_{c0}$')
 ax.set_xscale('log')

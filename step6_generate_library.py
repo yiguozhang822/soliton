@@ -8,7 +8,8 @@ Physics:
   s'' = 2*(v + v_ext - eps)*s
   v'' = s^2/x^2 - (2/x)*v'
 
-  v_ext = -Xi/x  -  fb*(1+eta^2)^1.5 / sqrt(x^2+eta^2)
+  v_ext = -Xi/x  -  fb*(1+eta^2)^1.5 / sqrt(x^2+(eta*xc0)^2)
+  (xc0 ≈ 1.30 grid units; Plummer scale η is in core-radius units, converted to grid units as η·xc0)
 
 Boundary conditions (5 conditions + 1 eigenvalue eps):
   s(x_min) = X_EPS,  s'(x_min) = 1,  v'(x_min) = 0
@@ -76,11 +77,13 @@ def to_fixed(sx, sy):
 
 # ── External potential ─────────────────────────────────────────────
 def v_ext(x, Xi, fb, eta):
+    # Plummer scale in grid units: eta*xc0 (xc0 ≈ 1.30; assigned below after iso solve).
+    # Prefactor (1+eta**2)**1.5 and SMBH term -Xi/x are unchanged.
     out = np.zeros_like(x)
     if Xi != 0:
         out += -Xi / x
     if fb != 0:
-        out += -fb * (1 + eta**2)**1.5 / np.sqrt(x**2 + eta**2)
+        out += -fb * (1 + eta**2)**1.5 / np.sqrt(x**2 + (eta*xc0)**2)
     return out
 
 # ── Helper: core radius (half-density crossing of rho = (s/x)^2) ──
