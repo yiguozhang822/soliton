@@ -175,8 +175,10 @@ fig3, axes3 = plt.subplots(2, n_eta + 1, figsize=(22, 7),
 fig3.suptitle('$f_r$ (top) and $f_\\rho$ (bottom) heatmaps at each η value',
               fontsize=13, y=1.02)
 
-norm_fr2   = mcolors.Normalize(vmin=0.2,  vmax=1.0)
-norm_frho2 = mcolors.Normalize(vmin=1.0,  vmax=10.0)
+fr_lo,   fr_hi   = float(df['f_r'].min()),   float(df['f_r'].max())
+frho_lo, frho_hi = float(df['f_rho'].min()), float(df['f_rho'].max())
+norm_fr2   = mcolors.Normalize(vmin=fr_lo,   vmax=fr_hi)
+norm_frho2 = mcolors.LogNorm(vmin=frho_lo, vmax=frho_hi)
 cmap_fr2   = plt.cm.RdYlGn
 cmap_frho2 = plt.cm.YlOrRd
 
@@ -221,8 +223,12 @@ cax_fr   = axes3[0, n_eta]
 cax_frho = axes3[1, n_eta]
 fig3.colorbar(cm.ScalarMappable(norm=norm_fr2,   cmap=cmap_fr2),
               cax=cax_fr,   label='$f_r$')
-fig3.colorbar(cm.ScalarMappable(norm=norm_frho2, cmap=cmap_frho2),
-              cax=cax_frho, label='$f_\\rho$')
+cb_frho = fig3.colorbar(cm.ScalarMappable(norm=norm_frho2, cmap=cmap_frho2),
+                        cax=cax_frho, label='$f_\\rho$')
+_ticks = [t for t in [1, 2, 3, 5, 10] if frho_lo <= t < frho_hi] + [round(frho_hi, 1)]
+cb_frho.set_ticks(_ticks)
+cb_frho.set_ticklabels([f'{t:g}' for t in _ticks])
+cb_frho.ax.minorticks_off()
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -361,11 +367,17 @@ ax5.grid(alpha=0.3, which='both')
 plt.tight_layout()
 
 
-# ── Show all figures ───────────────────────────────────────────────
-print("\nDisplaying all figures...")
-print("  Figure 1: 3D scatter cube")
-print("  Figure 2: 3D surface slices")
-print("  Figure 3: Heatmap grid (all eta values)")
-print("  Figure 4: Log-log power-law analysis")
-print("  Figure 5: f_r × f_rho coupling scatter")
+# ── Save all figures ───────────────────────────────────────────────
+fig1.savefig('viz_fig1_3d_scatter.png',    dpi=150, bbox_inches='tight')
+fig2.savefig('viz_fig2_3d_surfaces.png',   dpi=150, bbox_inches='tight')
+fig3.savefig('viz_fig3_heatmaps.png',      dpi=150, bbox_inches='tight')
+fig4.savefig('viz_fig4_powerlaw.png',      dpi=150, bbox_inches='tight')
+fig5.savefig('viz_fig5_fr_frho_scatter.png', dpi=150, bbox_inches='tight')
+
+print("\nSaved figures:")
+print("  viz_fig1_3d_scatter.png       — 3D scatter cube")
+print("  viz_fig2_3d_surfaces.png      — 3D surface slices")
+print("  viz_fig3_heatmaps.png         — Heatmap grid (all eta values)")
+print("  viz_fig4_powerlaw.png         — Log-log power-law analysis")
+print("  viz_fig5_fr_frho_scatter.png  — f_r × f_rho coupling scatter")
 plt.show()
